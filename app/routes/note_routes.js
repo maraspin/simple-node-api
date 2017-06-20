@@ -24,10 +24,12 @@ module.exports = function(app, people) {
   	var id = req.params["id"];
 
 	for(var i = 0; i < people.length; i += 1){
+
 	    var person = people[i];
+
 	    if(person.ID === id){
 
-	    	if (person.Suspect == 1) {
+	    	if (parseInt(person.Suspect, 10) === 1) {
 	    		suspect = true;
 		    }
 
@@ -37,9 +39,9 @@ module.exports = function(app, people) {
 
 		    // Return true or false whether person :id is a suspect or not
 		    res.send(JSON.stringify(result));
-			res.end();
-		    return;
+			return;
 	    }
+
 	}
 
 	// Not found!
