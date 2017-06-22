@@ -29,6 +29,7 @@ module.exports = function(app, people) {
 
 	    if(person.ID === id){
 
+			suspect = false;
 	    	if (parseInt(person.Suspect, 10) === 1) {
 	    		suspect = true;
 		    }
