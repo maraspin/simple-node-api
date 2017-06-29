@@ -6,11 +6,13 @@ module.exports = function(app, people) {
 	res.writeHead(200, {"Content-Type": "text/html"});
 	console.log("People List Requested");
 
-	for(var i = 0; i < people.length; i += 1){
-		delete people[i].Suspect;
+  var ret = JSON.parse(JSON.stringify(people));
+
+	for(var i = 0; i < ret.length; i += 1){
+		delete ret[i].Suspect;
 	}
 
-	res.end(JSON.stringify(people));
+	res.end(JSON.stringify(ret));
 
   });
 
@@ -40,7 +42,7 @@ module.exports = function(app, people) {
 
 		    // Return true or false whether person :id is a suspect or not
 		    res.send(JSON.stringify(result));
-			return;
+			  return;
 	    }
 
 	}
