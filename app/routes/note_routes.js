@@ -3,14 +3,8 @@ module.exports = function(app, people) {
    // Returns a list of people
    app.get('/', (req, res) => {
 
-	res.writeHead(200, {"Content-Type": "text/html"});
-	console.log("People List Requested");
-
-	for(var i = 0; i < people.length; i += 1){
-		delete people[i].Suspect;
-	}
-
-	res.end(JSON.stringify(people));
+	res.writeHead(403, {"Content-Type": "text/html"});
+	res.end("You're not supposed to be here...");
 
   });
 
@@ -18,37 +12,33 @@ module.exports = function(app, people) {
   // Returns whether checked person is suspected or not
   app.get('/check/:id', (req, res) => {
 
-	console.log("Suspect Status Check Requested");
+  	var id = parseInt(req.params["id"]);
 
-  	var suspect = false;
-  	var id = req.params["id"];
+  	if (id < 1 || id > 100) {
+		// Not found!
+		res.writeHead(404, {"Content-Type": "text/html"});
+		res.write("Station Not Found");
+		res.end();
+  	}
 
-	for(var i = 0; i < people.length; i += 1){
+	var working = true;
 
-	    var person = people[i];
+	console.log(id);
+	koStations = [8,11,13,19,27,29,31,37,39,57,58,59,60,61,62,63,64,67,68,93];
 
-	    if(person.ID === id){
-
-			suspect = false;
-	    	if (parseInt(person.Suspect, 10) === 1) {
-	    		suspect = true;
-		    }
-
-		    var result = new Object();
-		    result.id = id;
-		    result.suspect = suspect;
-
-		    // Return true or false whether person :id is a suspect or not
-		    res.send(JSON.stringify(result));
-			return;
-	    }
-
+	for (var i = 0; i < koStations.length; i++) {
+	  	if (koStations[i] === id) {
+	    	working = false;
+	    	break;
+	  	}
 	}
 
-	// Not found!
-	res.writeHead(404, {"Content-Type": "text/html"});
-	res.write("Person Not Found");
-  	res.end();
+	var result = new Object();
+	result.id = id;
+	result.working = working;
+
+    res.send(JSON.stringify(result));
+	return;
 
   });
 
