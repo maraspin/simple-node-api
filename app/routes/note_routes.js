@@ -38,6 +38,8 @@ module.exports = function(app, people) {
 
 		    var result = new Object();
 		    result.id = id;
+			result.surname = person.Surname;
+			result.name = person.Name;
 		    result.suspect = suspect;
 
 		    // Return true or false whether person :id is a suspect or not
