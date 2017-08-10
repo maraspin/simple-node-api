@@ -1,23 +1,24 @@
-/* REQUIRES */
 const express = require('express');
-let bodyParser = require('body-parser');
-const serverConfig = require('./app/configs/server.config');
-const noteRoute = require('./app/routes/note.routes');
+const converter = require('csvtojson').Converter;
+const fs = require("fs");
 
+const app = express();
+const port = 8000;
 
-/* APP USE CASES*/
-let app = express();
-let router = express.Router();
+const csvFileName = "./data/people.csv";
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
+//new converter instance
+var csvConverter = new converter({trim:true,delimiter:";"});
 
-/* ROUTING */
-app.use('/', router);
-app.use('/people', noteRoute);
+//end_parsed will be emitted once parsing finished
+csvConverter.on("end_parsed",function(jsonObj){
 
-app.listen(serverConfig.serverPort, () => {
-    console.log('We are live on ' + serverConfig.serverPort);
+	require('./app/routes')(app, jsonObj);
+
+	app.listen(port, () => {
+  		console.log('We are live on ' + port);
+	});
+
 });
+
+fs.createReadStream(csvFileName).pipe(csvConverter);
