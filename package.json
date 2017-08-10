@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/maraspin/simple-node-api#readme",
   "dependencies": {
-    "csvtojson": "^1.1.6",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "body-parser": "*"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
